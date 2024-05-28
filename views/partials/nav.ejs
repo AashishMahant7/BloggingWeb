@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blogify</title>
+  <!-- Include Bootstrap CSS -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Include FontAwesome for icons -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+  <style>
+    /* Custom Styles */
+    .navbar {
+      background-color: #ffffff; /* Light background */
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    
+    .navbar-brand, .navbar-nav .nav-link {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-size: 20px; /* Increased font size */
+      font-weight: 600; /* Increased font weight */
+      color: #333333 !important; /* Dark font color */
+    }
+
+    .navbar-nav .nav-link:hover {
+      color: #007bff !important; /* Hover color */
+      transition: color 0.3s ease-in-out;
+    }
+
+    .dark-mode-toggle {
+      cursor: pointer;
+      z-index: 1000;
+      color: #333333;
+      font-size: 1.5rem;
+      transition: transform 0.3s ease;
+    }
+
+    .dark-mode-toggle:hover {
+      transform: scale(1.1);
+    }
+
+    /* Dark Mode Styles */
+    body.dark-mode {
+      background-color: #121212;
+      color: #e0e0e0;
+    }
+
+    body.dark-mode .navbar {
+      background-color: #333333;
+    }
+
+    body.dark-mode .navbar-brand,
+    body.dark-mode .navbar-nav .nav-link {
+      color: #e0e0e0 !important;
+    }
+
+    body.dark-mode .dark-mode-toggle {
+      color: #ffc107;
+    }
+
+    /* Media Queries */
+    @media (max-width: 991.98px) {
+      .navbar-brand, .navbar-nav .nav-link {
+        font-size: 18px; /* Adjust font size for smaller screens */
+      }
+
+      .dark-mode-toggle {
+        font-size: 1.3rem; /* Adjust icon size for smaller screens */
+      }
+    }
+
+    @media (max-width: 767.98px) {
+      .navbar-brand, .navbar-nav .nav-link {
+        font-size: 16px; /* Further adjust font size for extra small screens */
+      }
+
+      .dark-mode-toggle {
+        font-size: 1.2rem; /* Further adjust icon size for extra small screens */
+      }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">Blogify</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="/">Home</a>
+        </li>
+        <% if(locals.user) { %>
+          <li class="nav-item">
+            <a class="nav-link" href="/blog/add-new">Add Blog</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <%= locals.user.email %>
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="/user/logout">Logout</a></li>
+            </ul>
+          </li>
+        <% } else { %>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Guest
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="/user/signup">Create Account</a></li>
+              <li><a class="dropdown-item" href="/user/signin">Sign in</a></li>
+            </ul>
+          </li>
+        <% } %>
+      </ul>
+      <div class="ml-auto dark-mode-toggle">
+        <i class="fas fa-moon"></i>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<% if(locals.error) { %>
+  <div class="container-fluid mt-4">
+    <div class="alert alert-danger" role="alert"><%= locals.error %></div>
+  </div>
+<% } %>
+
+<!-- Include Bootstrap JS and dependencies -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', (event) => {
+    const darkModeToggle = document.querySelector('.dark-mode-toggle');
+    const body = document.body;
+
+    darkModeToggle.addEventListener('click', () => {
+      body.classList.toggle('dark-mode');
+      const isDarkMode = body.classList.contains('dark-mode');
+      localStorage.setItem('darkMode', isDarkMode);
+    });
+
+    // Check if dark mode is enabled from local storage
+    const isDarkMode = localStorage.getItem('darkMode') === 'true';
+    if (isDarkMode) {
+      body.classList.add('dark-mode');
+    }
+  });
+</script>
+
+</body>
+</html>

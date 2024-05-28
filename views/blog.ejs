@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('./partials/head') %>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog Post</title>
+    
+    <style>
+        /* Default styles */
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Dark mode styles */
+        body.dark-mode {
+            background-color: #333;
+            color: #f70909;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 0 20px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: #067ff0;
+            text-align: center;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        img:hover {
+            transform: scale(1.05);
+        }
+
+        pre {
+            white-space: pre-wrap;
+            font-size: 1.9rem; /* Increased font size */
+            line-height: 1.8; /* Increased line height */
+            margin-bottom: 40px;
+        }
+
+        /* Custom animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .comment-container {
+            animation: fadeIn 0.5s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <%- include('./partials/nav') %>
+    <div class="container">
+        <h1><%= blog.title %></h1>
+        <img src="<%= blog.coverImageURL %>" alt="Blog Cover Image">
+        <pre style="font-size: 1.4rem; font-weight: bold;"><%= blog.body %></pre>
+    </div>
+
+    <div class="container mt-4">
+        <img src="<%= blog.createdBy.profileImageURL %>" alt="" width="60px">
+        <pre style="font-size: 1.4rem; font-weight: bold;">
+            <%= blog.createdBy.fullName %>
+        </pre>
+       
+    </div>
+
+    <div class="container mt-3">
+        <h1>Comments (<%= comments.length %>)</h1>
+        <% if (locals.user) { %>
+            <form action="/blog/comment/<%= blog._id %>" method="POST">
+                <div class="mb-4">
+                    <input type="text" class="form-control" id="email" name="content" placeholder="Enter your comments">
+                </div>
+                <button type="submit" class="btn btn-dark">Add</button>
+            </form>
+    
+            <% comments.forEach(comment => { %>
+                <div class="comment-container">
+                    <img src="<%= comment.createdBy.profileImageURL %>" width="55px" alt="">
+                    <%= comment.createdBy.fullName  %>
+                    <pre><%= comment.content %></pre>
+                </div>
+            <% }) %>
+        <% } %>
+    </div>
+
+    <%- include('./partials/script') %>
+  
+</body>
+</html>

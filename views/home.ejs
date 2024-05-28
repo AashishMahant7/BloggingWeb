@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('./partials/head') %>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+  
+    <style>
+        body {
+            background-color: #f8f9fa; /* Light gray background */
+            color: #212529; /* Dark gray text */
+        }
+        .card {
+            border: none; /* Remove border from cards */
+            transition: transform 0.3s, box-shadow 0.3s; /* Smooth transition on hover */
+            border-radius: 15px; /* Rounded corners */
+            overflow: hidden; /* Hide overflow content */
+        }
+        .card:hover {
+            transform: translateY(-5px); /* Move card up slightly on hover */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add shadow on hover */
+        }
+        .btn-primary {
+            background-color: #007bff; /* Blue button */
+            border-color: #007bff; /* Blue border */
+            transition: background-color 0.3s; /* Smooth transition on hover */
+        }
+        .btn-primary:hover {
+            background-color: #0056b3; /* Darker blue on hover */
+        }
+    </style>
+</head>
+<body>
+    <%- include('./partials/nav') %>
+    <div class="container mt-5">
+        <div class="row row-cols-1 row-cols-md-4 g-4">
+
+            <% blogs.forEach(blog => { %>
+                <div class="col">
+                    <div class="card h-100 shadow">
+                        <img src="<%= blog.coverImageURL %>" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title"><%= blog.title %></h5>
+                            <a href="/blog/<%= blog._id %>" class="btn btn-primary">View</a>
+                        </div>
+                    </div>
+                </div>
+            <% }) %>
+
+        </div>
+    </div>
+    <%- include('./partials/script') %>
+    
+</body>
+</html>
